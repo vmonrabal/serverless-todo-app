@@ -1,16 +1,18 @@
 import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import * as AWS from 'aws-sdk'
+import * as AWSXRay from 'aws-xray-sdk'
 import { getUserId } from '../utils'
 import {getUserTodo, updateTodoAttachmentUrl} from '../../businessLogic/todos'
 import { createLogger } from '../../utils/logger'
 
 const logger = createLogger('generateUploadUrl')
+const XAWS = AWSXRay.captureAWS(AWS)
 
 const bucketName = process.env.ATTACHMENT_S3_BUCKET
 const signedUrlexpiration = process.env.SIGNED_URL_EXPIRATION
 
-const s3 = new AWS.S3({
+const s3 = new XAWS.S3({
   signatureVersion: 'v4'
 })
 
