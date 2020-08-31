@@ -67,11 +67,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
-    iamRoleStatement:
-      - Effect: Allow
-        Action:
-          - s3:GetObject
-        Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET
+    iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
