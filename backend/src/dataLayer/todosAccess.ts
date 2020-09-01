@@ -37,7 +37,6 @@ export class TodosAccess {
     async getUserTodo(todoId: string, userId: string): Promise<TodoItem> {
         const result = await this.docClient.query({
             TableName: this.todosTable,
-            IndexName: this.todosUserIdIndex,
             KeyConditionExpression: 'todoId = :todoId AND userId = :userId',
             ExpressionAttributeValues: {
                 ':todoId': todoId,
@@ -72,13 +71,14 @@ export class TodosAccess {
         return todo
     }
 
-    async updateTodo(todoId:string, todoUpdate: TodoUpdate) {
-        logger.info(`Updating Todo with id ${todoId}`)
+    async updateTodo(todo: TodoItem, todoUpdate: TodoUpdate) {
+        logger.info(`Updating Todo with id ${todo.todoId}`)
 
         await this.docClient.update({
             TableName: this.todosTable,
             Key: {
-                todoId: todoId
+                userId: todo.userId,
+                todoId: todo.todoId
             },
             UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
             ExpressionAttributeNames: {
@@ -92,13 +92,14 @@ export class TodosAccess {
         }).promise()
     }
 
-    async updateTodoAttachmentUrl(todoId: string, attachmentUrl: string) {
-        logger.info(`Updating Todo with id ${todoId}`)
+    async updateTodoAttachmentUrl(todo: TodoItem, attachmentUrl: string) {
+        logger.info(`Updating Todo with id ${todo.todoId}`)
 
         await this.docClient.update({
             TableName: this.todosTable,
             Key: {
-                todoId: todoId
+                userId: todo.userId,
+                todoId: todo.todoId
             },
             UpdateExpression: 'set attachmentUrl = :attachmentUrl',
             ExpressionAttributeValues: {
@@ -107,13 +108,14 @@ export class TodosAccess {
         }).promise()
     }
 
-    async deleteTodo(todoId: string) {
-        logger.info(`Deleting Todo with id ${todoId}`)
+    async deleteTodo(todo: TodoItem) {
+        logger.info(`Deleting Todo with id ${todo.todoId}`)
 
         await this.docClient.delete({
             TableName: this.todosTable,
             Key: {
-                todoId: todoId
+                userId: todo.userId,
+                todoId: todo.todoId
             }
         }).promise()
     }

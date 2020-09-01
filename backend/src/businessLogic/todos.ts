@@ -41,14 +41,14 @@ export async function updateTodo(
     if(!todoToUpdate){
         throw new Error('Todo not found')
     }
-    await todoAccess.updateTodo(todoId, updateTodoRequest)
+    await todoAccess.updateTodo(todoToUpdate, updateTodoRequest)
 }
 
 export async function updateTodoAttachmentUrl(
-    todoId: string,
+    todo: TodoItem,
     attachmentUrl: string
 ) {
-    await todoAccess.updateTodoAttachmentUrl(todoId, attachmentUrl)
+    await todoAccess.updateTodoAttachmentUrl(todo, attachmentUrl)
 }
 
 export async function deleteTodo(
@@ -59,6 +59,6 @@ export async function deleteTodo(
     if(!todoToDelete){
         throw new Error('Todo not found')
     }
-    await todoAccess.deleteTodo(todoId)
+    await todoAccess.deleteTodo(todoToDelete)
 }
 

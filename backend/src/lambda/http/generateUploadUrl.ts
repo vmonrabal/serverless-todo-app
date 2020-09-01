@@ -36,7 +36,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const uploadUrl = getUploadUrl(todoId)
   const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/${todoId}`
 
-  await updateTodoAttachmentUrl(todoId, attachmentUrl)
+  await updateTodoAttachmentUrl(todo, attachmentUrl)
   logger.info(`Todo generate upload url for id ${todoId} created successfully`)
   return {
     statusCode: 201,
